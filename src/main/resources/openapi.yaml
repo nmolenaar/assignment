@@ -1,0 +1,127 @@
+openapi: 3.0.3
+info:
+  title: Word Frequency Analyzer API
+  version: 1.0.0
+tags:
+  - name: Frequency
+    description: Word frequency operations
+    x-java-interface-name: FrequencyApi
+paths:
+  /api/v1/frequency/highest:
+    post:
+      tags:
+        - Frequency
+      summary: Calculate the highest word frequency
+      operationId: getHighestFrequency
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FrequencyHighestRequest'
+      responses:
+        '200':
+          description: Highest frequency
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FrequencyHighestResponse'
+  /api/v1/frequency/word:
+    post:
+      tags:
+        - Frequency
+      summary: Calculate the frequency of a specific word
+      operationId: getFrequencyOfWord
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FrequencyWordRequest'
+      responses:
+        '200':
+          description: Frequency of word
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FrequencyWordResponse'
+  /api/v1/frequency/top:
+    post:
+      tags:
+        - Frequency
+      summary: Get most frequent N words
+      operationId: getTopNWords
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FrequencyTopRequest'
+      responses:
+        '200':
+          description: List of top N words
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FrequencyTopResponse'
+components:
+  schemas:
+    FrequencyHighestRequest:
+      type: object
+      properties:
+        text:
+          type: string
+          minLength: 1
+      required:
+        - text
+      title: FrequencyHighestRequest
+      description: ''
+    FrequencyWordRequest:
+      type: object
+      properties:
+        text:
+          type: string
+          minLength: 1
+        word:
+          type: string
+          minLength: 1
+      required:
+        - text
+        - word
+      title: FrequencyWordRequest
+    FrequencyTopRequest:
+      type: object
+      properties:
+        text:
+          type: string
+          minLength: 1
+        'n':
+          type: integer
+          minimum: 1
+      required:
+        - text
+        - 'n'
+    FrequencyHighestResponse:
+      title: FrequencyHighestResponse
+      type: object
+      properties:
+        frequency:
+          type: integer
+    FrequencyWordResponse:
+      title: FrequencyWordResponse
+      type: object
+      properties:
+        word:
+          type: string
+        frequency:
+          type: integer
+    FrequencyTopResponse:
+      title: FrequencyTopResponse
+      type: array
+      items:
+        type: object
+        properties:
+          word:
+            type: string
+          frequency:
+            type: integer
